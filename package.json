@@ -19,13 +19,13 @@
   "keywords": ["hwpx", "docx", "git", "version-control", "document", "korean", "hangul", "office", "zip"],
   "author": "Gitument Contributors",
   "license": "MIT",
-  "homepage": "https://github.com/your-username/gitument#readme",
+  "homepage": "https://github.com/wonjongin/gitument#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/gitument.git"
+    "url": "git+https://github.com/wonjongin/gitument.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/gitument/issues"
+    "url": "https://github.com/wonjongin/gitument/issues"
   },
   "files": [
     "dist/",

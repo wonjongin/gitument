@@ -1,0 +1,12 @@
+#!/bin/sh
+# Gitument Post-merge Hook
+# 추출된 디렉토리를 자동으로 압축합니다
+
+# Gitument 명령어 실행
+gitument process-post-merge "$(pwd)"
+
+# 명령어 실행 결과 확인
+if [ $? -ne 0 ]; then
+    echo "Gitument post-merge 처리에 실패했습니다."
+    exit 1
+fi
