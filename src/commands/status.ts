@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import simpleGit, { SimpleGit } from 'simple-git';
 import { GitIntegration } from '../lib/gitIntegration';
 // import { FileProcessor } from '../lib/fileProcessor'; // 사용하지 않음

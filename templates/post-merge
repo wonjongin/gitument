@@ -2,11 +2,19 @@
 # Gitument Post-merge Hook
 # 추출된 디렉토리를 자동으로 압축합니다
 
+echo "Post-merge 훅 실행 중..."
+echo "현재 디렉토리: $(pwd)"
+echo "추출된 디렉토리 확인:"
+ls -la | grep "_extracted"
+
 # Gitument 명령어 실행
+echo "Gitument process-post-merge 실행 중..."
 gitument process-post-merge "$(pwd)"
 
 # 명령어 실행 결과 확인
 if [ $? -ne 0 ]; then
     echo "Gitument post-merge 처리에 실패했습니다."
     exit 1
+else
+    echo "Post-merge 처리 완료!"
 fi

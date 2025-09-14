@@ -84,17 +84,70 @@ export class GitIntegration {
     
     try {
       const status = await git.status();
+      
+      // 디버깅을 위한 정보 출력
+      console.log('Git 상태:', {
+        modified: status.modified,
+        created: status.created,
+        deleted: status.deleted,
+        renamed: status.renamed
+      });
+      
       const allFiles = [
         ...status.modified,
         ...status.created,
         ...status.renamed.map(r => r.to)
       ];
 
+      console.log('모든 변경된 파일:', allFiles);
+      
       // HWPX/DOCX 파일만 필터링
-      return allFiles.filter(file => this.fileProcessor.isSupportedFile(file));
+      const supportedFiles = allFiles.filter(file => this.fileProcessor.isSupportedFile(file));
+      console.log('지원되는 파일:', supportedFiles);
+      
+      // .gitignore에 추가된 파일들도 확인
+      const ignoredFiles = await this.getIgnoredFiles(repoPath);
+      console.log('.gitignore에 추가된 파일들:', ignoredFiles);
+      
+      // .gitignore에 추가된 파일들 중 HWPX/DOCX 파일도 포함
+      const allSupportedFiles = [...supportedFiles, ...ignoredFiles];
+      console.log('최종 지원되는 파일:', allSupportedFiles);
+      
+      return allSupportedFiles;
     } catch (error) {
       throw new Error(`Git 상태 확인 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
     }
+  }
+
+  /**
+   * .gitignore에 추가된 HWPX/DOCX 파일들을 찾습니다.
+   * @param repoPath - Git 저장소 경로
+   * @returns .gitignore에 추가된 파일 목록
+   */
+  private async getIgnoredFiles(repoPath: string): Promise<string[]> {
+    const gitignorePath = path.join(repoPath, '.gitignore');
+    
+    if (!(await fs.pathExists(gitignorePath))) {
+      return [];
+    }
+    
+    const gitignoreContent = await fs.readFile(gitignorePath, 'utf8');
+    const lines = gitignoreContent.split('\n');
+    
+    const ignoredFiles: string[] = [];
+    
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      // Gitument managed files 섹션에서 파일 찾기
+      if (trimmedLine && !trimmedLine.startsWith('#') && this.fileProcessor.isSupportedFile(trimmedLine)) {
+        const fullPath = path.join(repoPath, trimmedLine);
+        if (await fs.pathExists(fullPath)) {
+          ignoredFiles.push(trimmedLine);
+        }
+      }
+    }
+    
+    return ignoredFiles;
   }
 
   /**
@@ -124,8 +177,14 @@ export class GitIntegration {
         // 파일 추출
         await this.fileProcessor.extractFile(filePath, extractDir);
         
-        // 원본 파일을 Git에서 제외
+        // 원본 파일을 Git에서 제거 (이미 스테이징된 경우)
+        await git.reset([filePath]);
+        
+        // 원본 파일을 .gitignore에 추가
         await this.addToGitignore(repoPath, filePath);
+        
+        // .gitignore 파일을 Git에 추가
+        await git.add('.gitignore');
         
         // 추출된 디렉토리를 Git에 추가
         await git.add(extractDir);
@@ -303,7 +362,7 @@ gitument process-post-merge "$(pwd)"
    */
   private getExtractDirPath(filePath: string, config: GitumentConfig): string {
     const dir = path.dirname(filePath);
-    const filename = path.basename(filePath, path.extname(filePath));
+    const filename = path.basename(filePath); // 확장자 포함
     const pattern = config.extractDirPattern || '{filename}_extracted';
     const extractDirName = pattern.replace('{filename}', filename);
     return path.join(dir, extractDirName);
@@ -319,6 +378,7 @@ gitument process-post-merge "$(pwd)"
     const dir = path.dirname(extractDir);
     const extractDirName = path.basename(extractDir);
     const filename = extractDirName.replace('_extracted', '');
+    
     return path.join(dir, filename);
   }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as packageJson from '../../package.json';
 
 // 명령어 모듈들

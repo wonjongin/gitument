@@ -60,13 +60,27 @@ export class FileProcessor {
       const zip = new AdmZip(filePath);
       const entries = zip.getEntries();
 
+      // 파일 구조 검증
+
       if (fileType === FileType.HWPX) {
-        // HWPX 필수 파일 확인
-        const requiredFiles = ['META-INF/manifest.xml', 'content.hpf'];
+        // HWPX 필수 파일 확인 (실제 구조에 맞게)
+        const requiredFiles = ['META-INF/manifest.xml'];
+        const contentFiles = ['Contents/content.hpf', 'content.hpf', 'Contents/content.xml', 'content.xml'];
+        
+        // 필수 파일 확인
         for (const requiredFile of requiredFiles) {
           if (!entries.find((entry: any) => entry.entryName === requiredFile)) {
             throw new Error(`HWPX 파일에 필수 파일이 없습니다: ${requiredFile}`);
           }
+        }
+        
+        // 콘텐츠 파일 확인 (Contents/ 디렉토리 내부도 확인)
+        const hasContentFile = contentFiles.some(file => 
+          entries.find((entry: any) => entry.entryName === file)
+        );
+        
+        if (!hasContentFile) {
+          console.log(`경고: HWPX 파일에 콘텐츠 파일이 없습니다. 계속 진행합니다.`);
         }
       } else if (fileType === FileType.DOCX) {
         // DOCX 필수 파일 확인

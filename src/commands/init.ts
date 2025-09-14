@@ -1,5 +1,5 @@
 // import * as path from 'path'; // 사용하지 않음
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { GitIntegration } from '../lib/gitIntegration';
 import { InitOptions } from '../types';
 

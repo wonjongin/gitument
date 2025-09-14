@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import ora from 'ora';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { FileProcessor } from '../lib/fileProcessor';
 import { detectFileTypeByExtension, FileType } from '../lib/utils';
 import { ExtractOptions } from '../types';
