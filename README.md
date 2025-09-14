@@ -16,7 +16,7 @@ HWPX와 DOCX 파일을 위한 Git 버전 관리 도구입니다. ZIP 기반 문�
 npm install -g gitument
 
 # 또는 yarn 사용
-yarn add -g gitument
+yarn global add gitument
 
 # 또는 pnpm 사용
 pnpm add -g gitument
