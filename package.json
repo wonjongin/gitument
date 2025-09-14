@@ -16,9 +16,23 @@
     "start": "node dist/bin/gitument.js",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["hwpx", "docx", "git", "version-control", "document", "korean"],
-  "author": "",
+  "keywords": ["hwpx", "docx", "git", "version-control", "document", "korean", "hangul", "office", "zip"],
+  "author": "Gitument Contributors",
   "license": "MIT",
+  "homepage": "https://github.com/your-username/gitument#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/gitument.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/gitument/issues"
+  },
+  "files": [
+    "dist/",
+    "templates/",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=14.0.0"
   },

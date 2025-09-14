@@ -29,6 +29,8 @@ pnpm add -g gitument
 ```bash
 # Git 저장소에서 실행
 gitument init
+# 또는 짧은 명령어
+gitument i
 ```
 
 이 명령어는 현재 Git 저장소에 필요한 훅을 설치합니다.
@@ -38,12 +40,16 @@ gitument init
 ```bash
 # HWPX 파일 추출
 gitument extract document.hwpx
+# 또는 짧은 명령어
+gitument x document.hwpx
 
 # DOCX 파일 추출 (출력 디렉토리 지정)
 gitument extract document.docx -o extracted_doc
+gitument x document.docx -o extracted_doc
 
 # 기존 디렉토리 덮어쓰기
 gitument extract document.hwpx --force
+gitument x document.hwpx --force
 ```
 
 ### 3. 디렉토리 압축
@@ -51,12 +57,16 @@ gitument extract document.hwpx --force
 ```bash
 # 추출된 디렉토리를 원본 파일로 압축
 gitument pack document_extracted
+# 또는 짧은 명령어
+gitument p document_extracted
 
 # 출력 파일 지정
 gitument pack document_extracted -o new_document.docx
+gitument p document_extracted -o new_document.docx
 
 # 파일 형식 강제 지정
 gitument pack document_extracted --type hwpx
+gitument p document_extracted --type hwpx
 ```
 
 ### 4. 상태 확인
@@ -64,9 +74,12 @@ gitument pack document_extracted --type hwpx
 ```bash
 # 기본 상태 확인
 gitument status
+# 또는 짧은 명령어
+gitument s
 
 # 상세 정보 표시
 gitument status --verbose
+gitument s --verbose
 ```
 
 ## 자동화된 워크플로우
